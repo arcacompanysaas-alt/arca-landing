@@ -71,14 +71,7 @@ function App() {
     <>
       {/* ── Tweaks Panel ── */}
       <TweaksPanel>
-        <TweakSection label="Estilo" />
-        <TweakRadio
-          label="Variação"
-          value={variant}
-          options={['moderno', 'dark', 'bold']}
-          onChange={v => setTweak('variant', v)}
-        />
-        <TweakSection label="Aparência" />
+        <TweakSection label="Tema" />
         <TweakToggle
           label="Modo escuro"
           value={darkMode}
