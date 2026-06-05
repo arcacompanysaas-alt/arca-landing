@@ -83,12 +83,12 @@ function useWindowWidth() {
 }
 
 const ARCA_URLS = {
-  signup:           'https://app.arca.com/signup',
-  signupStarter:    'https://app.arca.com/signup?plan=starter',
-  signupPro:        'https://app.arca.com/signup?plan=professional',
-  signupEnterprise: 'https://app.arca.com/signup?plan=enterprise',
-  whatsapp:         'https://wa.me/5500000000000',
-  demo:             'https://www.youtube.com/watch?v=SEU_VIDEO',
+  signup:           'https://arcacompany.vercel.app/',
+  signupStarter:    'https://arcacompany.vercel.app/?plan=starter',
+  signupPro:        'https://arcacompany.vercel.app/?plan=professional',
+  signupEnterprise: 'https://arcacompany.vercel.app/?plan=enterprise',
+  whatsapp:         'https://wa.me/5584991094741',
+  demo:             'https://arcacompany.vercel.app/',
 };
 
 Object.assign(window, { THEMES, getTheme, useScrollFade, scrollToId, useWindowWidth, ARCA_URLS });
