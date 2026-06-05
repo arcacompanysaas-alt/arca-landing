@@ -82,4 +82,13 @@ function useWindowWidth() {
   return w;
 }
 
-Object.assign(window, { THEMES, getTheme, useScrollFade, scrollToId, useWindowWidth });
+const ARCA_URLS = {
+  signup:           'https://app.arca.com/signup',
+  signupStarter:    'https://app.arca.com/signup?plan=starter',
+  signupPro:        'https://app.arca.com/signup?plan=professional',
+  signupEnterprise: 'https://app.arca.com/signup?plan=enterprise',
+  whatsapp:         'https://wa.me/5500000000000',
+  demo:             'https://www.youtube.com/watch?v=SEU_VIDEO',
+};
+
+Object.assign(window, { THEMES, getTheme, useScrollFade, scrollToId, useWindowWidth, ARCA_URLS });

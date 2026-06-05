@@ -29,6 +29,7 @@ function CTASection({ t }) {
           14 dias grátis. Sem cartão de crédito. Sem compromisso.
         </p>
         <button
+          onClick={() => window.open(ARCA_URLS.signup, '_blank')}
           onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
           style={{
             background: '#FFFFFF', color: t.primary,

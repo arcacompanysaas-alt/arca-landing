@@ -47,6 +47,7 @@ function NavCTABtn({ t, fullWidth }) {
   const isBold = t.isBoldNav;
   return (
     <button
+      onClick={() => window.open(ARCA_URLS.signup, '_blank')}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

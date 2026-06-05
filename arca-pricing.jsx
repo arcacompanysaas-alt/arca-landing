@@ -2,26 +2,31 @@
 
 const PLANS = [
   {
-    id: 'free', name: 'Grátis', badge: 'Para começar',
-    monthly: 0, annual: 0, unit: 'Para sempre',
-    desc: 'Perfeito para testar se ARCA funciona para sua agência.',
-    features: ['Até 5 propostas/mês', 'White-label básico', 'Exportar como PDF', 'Suporte por email'],
-    cta: 'Comece agora', featured: false,
+    id: 'starter', name: 'Starter', badge: 'Para começar',
+    monthly: 99, annual: 82, unit: '/mês',
+    annualNote: 'Faturado como R$ 984/ano',
+    desc: 'Para agências que querem começar a criar propostas profissionais rapidamente.',
+    features: ['50 propostas/mês', 'Até 2 usuários', 'PDF', 'IA incluída', 'Compartilhamento por link'],
+    cta: 'Assinar Starter', featured: false,
+    ctaUrl: ARCA_URLS.signupStarter,
   },
   {
-    id: 'pro', name: 'Pro', badge: 'Mais popular',
-    monthly: 399, annual: 332, unit: '/mês',
-    annualNote: 'Faturado como R$ 3.984/ano',
-    desc: 'Para agências que querem crescer com tecnologia.',
-    features: ['Propostas ilimitadas', 'IA para descrições', 'White-label completo', 'Suporte por chat em PT', 'Relatórios automáticos', 'Assinatura eletrônica'],
-    cta: 'Começar trial grátis', featured: true,
+    id: 'pro', name: 'Professional', badge: 'Mais popular',
+    monthly: 249, annual: 207, unit: '/mês',
+    annualNote: 'Faturado como R$ 2.490/ano',
+    desc: 'Para agências que querem crescer com IA completa e suporte dedicado.',
+    features: ['200 propostas/mês', 'Até 10 usuários', 'PDF + Modo Apresentação', 'IA completa (descrições + roteiro + OCR)', 'Cálculo financeiro (câmbio + parcelas)', 'Suporte via WhatsApp'],
+    cta: 'Assinar Professional', featured: true,
+    ctaUrl: ARCA_URLS.signupPro,
   },
   {
     id: 'enterprise', name: 'Enterprise', badge: 'Grandes agências',
-    monthly: null, annual: null, unit: null,
-    desc: 'API customizada, integrações, SLA garantido.',
-    features: ['Tudo do Pro', 'API aberta', 'Integrações customizadas', 'Account manager dedicado', 'SLA 99.9% uptime'],
-    cta: 'Agendar conversa', featured: false,
+    monthly: 499, annual: 414, unit: '/mês',
+    annualNote: 'Faturado como R$ 4.980/ano',
+    desc: 'Para operadoras e redes que precisam de escala, suporte prioritário e onboarding dedicado.',
+    features: ['Propostas ilimitadas', 'Usuários ilimitados', 'Tudo do Professional', 'Onboarding personalizado', 'Suporte prioritário', 'Relatórios de uso'],
+    cta: 'Falar com a equipe', featured: false,
+    ctaUrl: ARCA_URLS.whatsapp,
   },
 ];
 
@@ -76,6 +81,7 @@ function FeaturedPlanCard({ plan, t, billing, delay, isMobile }) {
         ))}
       </ul>
       <button
+        onClick={() => window.open(plan.ctaUrl, '_blank')}
         style={{ width: '100%', background: '#FFFFFF', color: t.primary, border: 'none', borderRadius: 10, padding: '13px 0', fontSize: 14.5, fontWeight: 700, cursor: 'pointer', fontFamily: '"Plus Jakarta Sans", sans-serif', transition: 'background 0.18s' }}
         onMouseEnter={e => { e.currentTarget.style.background = '#EFF4FF'; }}
         onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; }}
@@ -87,8 +93,7 @@ function FeaturedPlanCard({ plan, t, billing, delay, isMobile }) {
 function RegularPlanCard({ plan, t, billing, delay }) {
   const [ref, anim] = useScrollFade(delay);
   const [hover, setHover] = React.useState(false);
-  const price    = billing === 'annual' ? plan.annual : plan.monthly;
-  const hasPrice = price !== null;
+  const price = billing === 'annual' ? plan.annual : plan.monthly;
 
   return (
     <div ref={ref}
@@ -105,22 +110,12 @@ function RegularPlanCard({ plan, t, billing, delay }) {
     >
       <PricingBadge text={plan.badge} featured={false} t={t} />
       <h3 style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: 22, fontWeight: 800, color: t.text, marginBottom: 8 }}>{plan.name}</h3>
-      {hasPrice ? (
-        <>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 3, marginBottom: 2 }}>
-            {price > 0 && <span style={{ fontSize: 12, color: t.textMuted, marginRight: 2 }}>R$</span>}
-            <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: price === 0 ? 32 : 44, fontWeight: 800, color: t.text, letterSpacing: '-0.02em', lineHeight: 1 }}>
-              {price === 0 ? 'Grátis' : price}
-            </span>
-          </div>
-          <div style={{ fontSize: 13, color: t.textMuted, marginBottom: 18 }}>{plan.unit}</div>
-        </>
-      ) : (
-        <>
-          <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: 28, fontWeight: 800, color: t.text, letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 2 }}>Personalizado</div>
-          <div style={{ fontSize: 13, color: t.textMuted, marginBottom: 18 }}>Fale com a gente</div>
-        </>
-      )}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 3, marginBottom: 2 }}>
+        <span style={{ fontSize: 12, color: t.textMuted, marginRight: 2 }}>R$</span>
+        <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: 44, fontWeight: 800, color: t.text, letterSpacing: '-0.02em', lineHeight: 1 }}>{price}</span>
+      </div>
+      <div style={{ fontSize: 13, color: t.textMuted, marginBottom: billing === 'annual' ? 3 : 18 }}>{plan.unit}</div>
+      {billing === 'annual' && <div style={{ fontSize: 11.5, color: t.textMuted, marginBottom: 16 }}>{plan.annualNote}</div>}
       <p style={{ fontSize: 13.5, color: t.textMuted, lineHeight: 1.6, marginBottom: 20 }}>{plan.desc}</p>
       <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {plan.features.map(f => (
@@ -131,6 +126,7 @@ function RegularPlanCard({ plan, t, billing, delay }) {
         ))}
       </ul>
       <button
+        onClick={() => window.open(plan.ctaUrl, '_blank')}
         style={{ width: '100%', background: 'transparent', color: t.primary, border: `2px solid ${t.primary}`, borderRadius: 10, padding: '12px 0', fontSize: 14.5, fontWeight: 700, cursor: 'pointer', fontFamily: '"Plus Jakarta Sans", sans-serif', transition: 'background 0.18s' }}
         onMouseEnter={e => { e.currentTarget.style.background = t.primaryLight; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}

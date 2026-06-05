@@ -146,6 +146,7 @@ function HeroCTAs({ t, centered }) {
       flexDirection: isMobile ? 'column' : 'row',
     }}>
       <button
+        onClick={() => window.open(ARCA_URLS.signup, '_blank')}
         onMouseEnter={() => sH1(true)} onMouseLeave={() => sH1(false)}
         style={{
           background: isBold ? '#FFFFFF' : t.primary,
@@ -160,6 +161,7 @@ function HeroCTAs({ t, centered }) {
         }}
       >Começar grátis agora</button>
       <button
+        onClick={() => window.open(ARCA_URLS.demo, '_blank')}
         onMouseEnter={() => sH2(true)} onMouseLeave={() => sH2(false)}
         style={{
           background: 'transparent',
