@@ -167,18 +167,24 @@ export default function FAQAIConsole({ isDark }: { isDark: boolean }) {
   ]
 
   return (
-    <section id="faq" className="relative w-full py-24 px-12 z-20">
+    <section id="faq" className="relative w-full py-20 px-4 md:px-12 z-20">
       <div className="max-w-3xl mx-auto">
         {/* Section header */}
-        <div className="mb-16 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: '-50px' }}
+          className="mb-12 md:mb-16 text-center"
+        >
           <span className={`font-bold text-xs tracking-widest uppercase mb-4 block ${isDark ? 'text-brand-light' : 'text-brand'}`}>
             Dúvidas Frequentes
           </span>
-          <h2 className={`text-4xl lg:text-5xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <h2 className={`text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
             Console de IA. <br className="hidden sm:block" />
             Respostas instantâneas.
           </h2>
-        </div>
+        </motion.div>
 
         {/* FAQ list */}
         <div className="space-y-3">
