@@ -69,23 +69,32 @@ function ArrowDivider({ isDark }: { isDark: boolean }) {
 function TabFlightParsing({ isDark }: { isDark: boolean }) {
   return (
     <>
-      <div className={`w-full md:w-5/12 p-8 relative overflow-hidden ${isDark ? 'bg-black/40 border-r border-white/5' : 'bg-gray-50 border-r border-gray-200'}`}>
+      <div className={`w-full md:w-5/12 p-6 relative overflow-hidden flex flex-col justify-center ${isDark ? 'bg-black/40 border-r border-white/5' : 'bg-gray-50 border-r border-gray-200'}`}>
         <div className="scanner-line" />
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Input: Texto Sujo do GDS</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3 block">Antes</span>
+
+        {/* Arquivo anexado */}
+        <div className={`flex items-center gap-3 p-3 rounded-xl border mb-3 w-fit ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
+          <div className={`w-9 h-10 rounded-lg flex items-center justify-center text-lg ${isDark ? 'bg-white/5' : 'bg-gray-100'}`}>
+            🖼️
+          </div>
+          <div>
+            <p className={`text-[10px] font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>print_voo_operadora.jpeg</p>
+            <p className={`text-[9px] ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Imagem · 284 KB</p>
+          </div>
         </div>
-        <div className={`font-mono text-xs leading-relaxed p-4 rounded-xl border ${isDark ? 'bg-ink-card border-white/5 text-green-400/80' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}>
-          1 G3 1862 G 12AUG 5 GRUJFK HK1 2230 0615+1<br />
-          2 G3 1863 G 20AUG 6 JFKGRU HK1 2000 0745+1<br />
-          FARE: USD 1450.00
+
+        {/* Mensagem WhatsApp/email */}
+        <div className={`text-xs leading-relaxed p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/5 text-gray-300' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}>
+          "Mano, o cliente quer o voo saindo de SP pra NY no dia 12 de agosto. Ele prefere de noite, acho que o G3 1862 serve, classe econômica mesmo. A volta é dia 20 de agosto às 20h. Vê o preço aí, deu uns <span className={`font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>1450 dólares</span> com as taxas."
         </div>
-        <p className={`mt-4 text-[10px] italic ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>*Cole qualquer formato caótico. A IA decifra.</p>
+        <p className={`mt-3 text-[9px] italic ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>*A IA extrai de qualquer fonte.</p>
       </div>
       <ArrowDivider isDark={isDark} />
       <div className="w-full md:w-7/12 p-8 flex flex-col justify-center items-center">
         <div className="w-full max-w-sm">
           <div className="mb-4">
-            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Output: Card Renderizado</span>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Depois: Card Renderizado</span>
           </div>
           <div className={`w-full rounded-2xl p-5 border ${isDark ? 'bg-ink-card border-white/10 shadow-lg' : 'bg-white border-gray-200 shadow-xl shadow-gray-200/50'}`}>
             <div className="flex items-center justify-between mb-4">
@@ -131,7 +140,7 @@ function TabPdfMigration({ isDark }: { isDark: boolean }) {
       <div className="w-full md:w-7/12 p-8 flex flex-col justify-center items-center">
         <div className="w-full max-w-sm flex flex-col gap-3">
           <div className="mb-2">
-            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Output: Estrutura Modular</span>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Depois: Estrutura Modular</span>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className={`block-1 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
@@ -165,7 +174,7 @@ function TabPromptGen({ isDark }: { isDark: boolean }) {
     <>
       <div className={`w-full md:w-5/12 p-8 relative flex flex-col justify-center ${isDark ? 'bg-black/40 border-r border-white/5' : 'bg-gray-50 border-r border-gray-200'}`}>
         <div className="mb-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Input: Prompt</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Antes: Prompt</span>
         </div>
         <div className={`p-4 rounded-xl border mb-4 ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
           <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -185,7 +194,7 @@ function TabPromptGen({ isDark }: { isDark: boolean }) {
       <div className="w-full md:w-7/12 p-8 flex flex-col justify-center items-center">
         <div className="w-full max-w-sm">
           <div className="mb-4">
-            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Output: IA Generativa</span>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Depois: IA Generativa</span>
           </div>
           {!isGenerating ? (
             <div className={`w-full h-40 rounded-2xl border border-dashed flex items-center justify-center ${isDark ? 'border-white/10 text-white/20' : 'border-gray-300 text-gray-400 bg-gray-50'}`}>
