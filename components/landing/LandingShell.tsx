@@ -38,8 +38,8 @@ export default function LandingShell() {
         <HeroSticky isDark={isDark} />
         <AIToolkit isDark={isDark} />
         <FeaturesBenefits isDark={isDark} />
-        <FAQAIConsole isDark={isDark} />
         <PricingLux isDark={isDark} />
+        <FAQAIConsole isDark={isDark} />
         <FinalCTA isDark={isDark} />
         <Footer isDark={isDark} />
       </div>
