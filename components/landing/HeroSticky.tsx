@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useMotionValueEvent, useScroll, useTransform, useMotionValue, PanInfo } from 'framer-motion'
 import { HERO_DATA } from '@/lib/data'
 
 function getCardStyle(cardIndex: number, active: number, isDark: boolean): React.CSSProperties {
@@ -15,57 +15,143 @@ function getCardStyle(cardIndex: number, active: number, isDark: boolean): React
   return { transform: 'translateX(120px) scale(0.88) translateZ(-120px) rotate(4deg)', opacity: 0.25, zIndex: 10 }
 }
 
-/* ── Mobile Hero: scroll vertical nativo com whileInView ── */
+/* ── Mobile Hero: Keynote carousel com drag ── */
 function HeroMobile({ isDark }: { isDark: boolean }) {
+  const [active, setActive] = useState(0)
+  const dragX = useMotionValue(0)
+  const total = HERO_DATA.length
+
+  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const threshold = 50
+    if (info.offset.x < -threshold && active < total - 1) {
+      setActive((p) => p + 1)
+    } else if (info.offset.x > threshold && active > 0) {
+      setActive((p) => p - 1)
+    }
+    dragX.set(0)
+  }
+
+  const item = HERO_DATA[active]
+
   return (
-    <section className="relative w-full px-6 pt-12 pb-16">
-      {HERO_DATA.map((item, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: i * 0.1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          className="mb-16 last:mb-0"
-        >
-          {/* Card de imagem */}
-          <div className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden border mb-6 ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-            <div className={`absolute inset-0 z-10 ${isDark ? 'bg-gradient-to-t from-ink/80 via-ink/20 to-transparent' : 'bg-gradient-to-t from-[#0C1524]/50 via-transparent to-transparent'}`} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
-            <div className={`absolute inset-x-4 bottom-4 p-3 rounded-xl backdrop-blur-md z-20 border ${isDark ? 'bg-ink-soft/90 border-white/10' : 'bg-white/95 border-gray-200 shadow-lg'}`}>
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-brand-light animate-pulse`} />
-                <div>
-                  <div className="text-[8px] font-bold uppercase tracking-wider text-gray-500">Engine Editorial</div>
-                  <div className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.status}</div>
-                </div>
+    <section className="relative w-full pt-10 pb-10 flex flex-col min-h-screen overflow-hidden">
+
+      {/* 1 — Título Focus: palavra grande com vertical slide + fade */}
+      <div className="px-6 mb-2 overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={item.bg}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35 }}
+            className={`text-[11vw] font-extrabold tracking-tighter leading-none select-none ${
+              isDark
+                ? 'text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.12)]'
+                : 'text-transparent [-webkit-text-stroke:1.5px_rgba(0,71,224,0.2)]'
+            }`}
+          >
+            {item.bg}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
+      {/* 2 — Carrossel de profundidade com drag */}
+      <div className="relative w-full flex items-center justify-center mb-6" style={{ height: '56vw', maxHeight: 280 }}>
+        {HERO_DATA.map((slide, i) => {
+          const diff = i - active
+          // Só renderiza o card ativo e os vizinhos imediatos
+          if (Math.abs(diff) > 1) return null
+          const isActive = diff === 0
+          return (
+            <motion.div
+              key={i}
+              drag={isActive ? 'x' : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              style={{ x: isActive ? dragX : 0, width: '75vw', maxWidth: 300, height: '100%', left: '50%', marginLeft: '-37.5vw' }}
+              onDragEnd={isActive ? handleDragEnd : undefined}
+              animate={{
+                scale: isActive ? 1 : 0.8,
+                opacity: isActive ? 1 : 0.35,
+                x: isActive ? 0 : diff * 260,
+                zIndex: isActive ? 20 : 10,
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="absolute"
+            >
+              <div className={`relative w-full h-full rounded-2xl overflow-hidden border ${
+                isDark ? 'border-white/10' : 'border-gray-200'
+              }`}
+                style={{
+                  boxShadow: isActive
+                    ? isDark ? '0 24px 60px rgba(0,0,0,0.8)' : '0 24px 60px rgba(0,71,224,0.18)'
+                    : 'none',
+                }}
+              >
+                <div className={`absolute inset-0 z-10 ${isDark ? 'bg-gradient-to-t from-ink/80 via-ink/10 to-transparent' : 'bg-gradient-to-t from-[#0C1524]/60 via-transparent to-transparent'}`} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={slide.img} alt={slide.title} className="absolute inset-0 w-full h-full object-cover" />
+                {isActive && (
+                  <div className={`absolute inset-x-3 bottom-3 p-2.5 rounded-xl backdrop-blur-md z-20 border ${isDark ? 'bg-ink-soft/90 border-white/10' : 'bg-white/95 border-gray-200 shadow-md'}`}>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-brand-light animate-pulse flex-shrink-0" />
+                      <div>
+                        <div className="text-[8px] font-bold uppercase tracking-wider text-gray-500">Engine Editorial</div>
+                        <div className={`text-[11px] font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{slide.status}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          )
+        })}
+      </div>
 
-          {/* Conteúdo de texto */}
-          <span className={`inline-block px-3 py-1 rounded-full font-bold text-[10px] tracking-widest uppercase mb-3 border ${
-            isDark ? 'bg-brand/20 text-brand-light border-brand/30' : 'bg-brand/10 text-brand border-brand/20'
-          }`}>
-            Módulo {item.step}
-          </span>
-          <h2 className={`text-3xl font-extrabold tracking-tight mb-3 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {item.title}
-          </h2>
-          <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{item.text}</p>
-        </motion.div>
-      ))}
+      {/* Dots de paginação */}
+      <div className="flex items-center justify-center gap-2 mb-6">
+        {HERO_DATA.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className={`rounded-full transition-all duration-300 ${
+              i === active
+                ? 'w-5 h-1.5 bg-brand'
+                : isDark ? 'w-1.5 h-1.5 bg-white/20' : 'w-1.5 h-1.5 bg-gray-300'
+            }`}
+          />
+        ))}
+      </div>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="mt-4"
-      >
-        <button className={`w-full btn-shine relative overflow-hidden px-8 py-4 font-extrabold text-base rounded-xl transition-all duration-300 ${
+      {/* 3 — Copy de suporte: tag + título + texto com AnimatePresence */}
+      <div className="px-6 flex-1">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.3 }}
+          >
+            <span className={`inline-block px-3 py-1 rounded-full font-bold text-[10px] tracking-widest uppercase mb-3 border ${
+              isDark ? 'bg-brand/20 text-brand-light border-brand/30' : 'bg-brand/10 text-brand border-brand/20'
+            }`}>
+              Módulo {item.step}
+            </span>
+            <h2 className={`text-2xl font-extrabold tracking-tight mb-3 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              {item.title}
+            </h2>
+            <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              {item.text}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* 4 — CTA sempre ancorado */}
+      <div className="px-6 mt-6">
+        <button className={`w-full btn-shine relative overflow-hidden px-8 py-4 font-extrabold text-base rounded-xl transition-all duration-300 active:scale-[0.98] ${
           isDark ? 'bg-white text-brand shadow-[0_0_30px_rgba(255,255,255,0.15)]' : 'bg-brand text-white shadow-xl shadow-brand/30'
         }`}>
           Começar Grátis Agora →
@@ -79,7 +165,7 @@ function HeroMobile({ isDark }: { isDark: boolean }) {
             </span>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }
