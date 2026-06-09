@@ -7,7 +7,7 @@ import TopHeader from '@/components/landing/TopHeader'
 import HeroSticky from '@/components/landing/HeroSticky'
 import AIToolkit from '@/components/landing/AIToolkit'
 import FeaturesBenefits from '@/components/landing/FeaturesBenefits'
-import FAQAIConsole from '@/components/landing/FAQAIConsole'
+import PricingLux from '@/components/landing/PricingLux'
 
 export default function LandingShell() {
   const { resolvedTheme } = useTheme()
@@ -35,7 +35,7 @@ export default function LandingShell() {
         <HeroSticky isDark={isDark} />
         <AIToolkit isDark={isDark} />
         <FeaturesBenefits isDark={isDark} />
-        <FAQAIConsole isDark={isDark} />
+        <PricingLux isDark={isDark} />
       </div>
     </div>
   )
