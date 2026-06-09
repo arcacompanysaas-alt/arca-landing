@@ -6,6 +6,7 @@ import NetworkCoreBackground from '@/components/effects/NetworkCoreBackground'
 import TopHeader from '@/components/landing/TopHeader'
 import HeroSticky from '@/components/landing/HeroSticky'
 import AIToolkit from '@/components/landing/AIToolkit'
+import FeaturesBenefits from '@/components/landing/FeaturesBenefits'
 
 export default function LandingShell() {
   const { resolvedTheme } = useTheme()
@@ -32,6 +33,7 @@ export default function LandingShell() {
       <div className="pt-20">
         <HeroSticky isDark={isDark} />
         <AIToolkit isDark={isDark} />
+        <FeaturesBenefits isDark={isDark} />
       </div>
     </div>
   )
