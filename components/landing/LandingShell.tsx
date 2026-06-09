@@ -8,6 +8,8 @@ import HeroSticky from '@/components/landing/HeroSticky'
 import AIToolkit from '@/components/landing/AIToolkit'
 import FeaturesBenefits from '@/components/landing/FeaturesBenefits'
 import PricingLux from '@/components/landing/PricingLux'
+import FinalCTA from '@/components/landing/FinalCTA'
+import Footer from '@/components/landing/Footer'
 
 export default function LandingShell() {
   const { resolvedTheme } = useTheme()
@@ -36,6 +38,8 @@ export default function LandingShell() {
         <AIToolkit isDark={isDark} />
         <FeaturesBenefits isDark={isDark} />
         <PricingLux isDark={isDark} />
+        <FinalCTA isDark={isDark} />
+        <Footer isDark={isDark} />
       </div>
     </div>
   )
