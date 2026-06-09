@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes'
 import NetworkCoreBackground from '@/components/effects/NetworkCoreBackground'
 import TopHeader from '@/components/landing/TopHeader'
 import HeroSticky from '@/components/landing/HeroSticky'
+import AIToolkit from '@/components/landing/AIToolkit'
 
 export default function LandingShell() {
   const { resolvedTheme } = useTheme()
@@ -30,6 +31,7 @@ export default function LandingShell() {
       {/* pt-20 compensa a altura do header fixo */}
       <div className="pt-20">
         <HeroSticky isDark={isDark} />
+        <AIToolkit isDark={isDark} />
       </div>
     </div>
   )
