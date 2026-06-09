@@ -1,4 +1,7 @@
+'use client'
+
 import { ReactNode } from 'react'
+import { motion } from 'framer-motion'
 
 interface FeatureBlock {
   tag: string
@@ -153,14 +156,17 @@ function FeatureRow({
   reverse: boolean
 }) {
   return (
-    <div className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-12 lg:gap-20`}>
-      {/* Visual half */}
-      <div className="w-full md:w-1/2">
-        {visual}
-      </div>
-
-      {/* Copy half */}
-      <div className="w-full md:w-1/2">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true, margin: '-50px' }}
+      // Mobile: sempre texto em cima, visual em baixo (flex-col)
+      // Desktop: Z-pattern via flex-row / flex-row-reverse
+      className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 lg:gap-20`}
+    >
+      {/* Copy: no mobile vem primeiro (order-1), no desktop respeita o reverse */}
+      <div className="w-full md:w-1/2 order-1 md:order-none">
         <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase mb-5 border ${
           isDark ? 'bg-brand/20 text-brand-light border-brand/30' : 'bg-brand/10 text-brand border-brand/20'
         }`}>
@@ -173,14 +179,19 @@ function FeatureRow({
           {text}
         </p>
       </div>
-    </div>
+
+      {/* Visual: no mobile vem depois (order-2) */}
+      <div className="w-full md:w-1/2 order-2 md:order-none">
+        {visual}
+      </div>
+    </motion.div>
   )
 }
 
 /* ── Main export ── */
 export default function FeaturesBenefits({ isDark }: { isDark: boolean }) {
   return (
-    <section id="features" className="relative w-full py-24 px-12 z-20">
+    <section id="features" className="relative w-full py-20 px-4 md:px-12 z-20">
       <div className="max-w-6xl mx-auto">
 
         {/* Section header */}

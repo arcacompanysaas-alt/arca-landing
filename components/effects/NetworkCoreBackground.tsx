@@ -9,13 +9,9 @@ interface Particle {
   vy: number
 }
 
-const PARTICLE_COUNT = 55
+const PARTICLE_COUNT_DESKTOP = 55
+const PARTICLE_COUNT_MOBILE = 20
 
-/**
- * Mouse-reactive particle constellation rendered on a fixed full-screen canvas.
- * Mirrors the reference prototype 1:1, but reads the active theme via props so
- * it stays in sync with next-themes instead of local state.
- */
 export default function NetworkCoreBackground({ isDark }: { isDark: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -27,6 +23,8 @@ export default function NetworkCoreBackground({ isDark }: { isDark: boolean }) {
 
     let animationFrameId: number
 
+    const isMobile = () => window.innerWidth < 768
+
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -34,10 +32,13 @@ export default function NetworkCoreBackground({ isDark }: { isDark: boolean }) {
     window.addEventListener('resize', resize)
     resize()
 
+    const count = isMobile() ? PARTICLE_COUNT_MOBILE : PARTICLE_COUNT_DESKTOP
     const particles: Particle[] = []
-    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
+    // On mobile the glow pulses from center; on desktop it follows the mouse.
+    const glowPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
+    let pulsePhase = 0
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -47,21 +48,39 @@ export default function NetworkCoreBackground({ isDark }: { isDark: boolean }) {
     }
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX
-      mouse.y = e.clientY
+      if (!isMobile()) {
+        glowPos.x = e.clientX
+        glowPos.y = e.clientY
+      }
     }
     window.addEventListener('mousemove', handleMouseMove)
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 350)
-      gradient.addColorStop(0, isDark ? 'rgba(0, 71, 224, 0.12)' : 'rgba(0, 71, 224, 0.05)')
+      // Mobile: gentle autonomous pulse; Desktop: mouse-reactive glow
+      let glowRadius: number
+      let glowAlpha: number
+      if (isMobile()) {
+        pulsePhase += 0.015
+        glowRadius = 220 + Math.sin(pulsePhase) * 60
+        glowAlpha = isDark ? 0.08 + Math.sin(pulsePhase) * 0.04 : 0.04 + Math.sin(pulsePhase) * 0.02
+        // Keep centered on mobile
+        glowPos.x = canvas.width / 2
+        glowPos.y = canvas.height / 2
+      } else {
+        glowRadius = 350
+        glowAlpha = isDark ? 0.12 : 0.05
+      }
+
+      const gradient = ctx.createRadialGradient(glowPos.x, glowPos.y, 0, glowPos.x, glowPos.y, glowRadius)
+      gradient.addColorStop(0, `rgba(0, 71, 224, ${glowAlpha})`)
       gradient.addColorStop(1, 'transparent')
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const total = particles.length
+      for (let i = 0; i < total; i++) {
         const p = particles[i]
         p.x += p.vx
         p.y += p.vy
@@ -73,7 +92,7 @@ export default function NetworkCoreBackground({ isDark }: { isDark: boolean }) {
         ctx.fillStyle = isDark ? 'rgba(64, 128, 255, 0.3)' : 'rgba(0, 71, 224, 0.3)'
         ctx.fill()
 
-        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+        for (let j = i + 1; j < total; j++) {
           const p2 = particles[j]
           const dist = Math.hypot(p.x - p2.x, p.y - p2.y)
           if (dist < 130) {

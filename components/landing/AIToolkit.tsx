@@ -246,7 +246,7 @@ export default function AIToolkit({ isDark }: { isDark: boolean }) {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <section id="ai-tools" className="relative w-full pt-20 pb-16 px-12 z-20">
+    <section id="ai-tools" className="relative w-full pt-20 pb-16 px-4 md:px-12 z-20">
       <style dangerouslySetInnerHTML={{ __html: scannerStyle }} />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -259,21 +259,27 @@ export default function AIToolkit({ isDark }: { isDark: boolean }) {
               O Fim do Trabalho Braçal.
             </h2>
           </div>
-          <div className={`flex items-center p-1.5 rounded-xl border ${isDark ? 'bg-ink-soft/60 border-white/10' : 'bg-gray-100 border-gray-200'}`}>
-            {TABS.map((tab, i) => (
-              <TabButton
-                key={i}
-                label={tab.label}
-                active={activeTab === i}
-                onClick={() => { setActiveTab(i); }}
-                isDark={isDark}
-              />
-            ))}
+          {/* Mobile: swipe horizontal; Desktop: row normal */}
+          <div
+            className={`flex items-center p-1.5 rounded-xl border overflow-x-auto md:overflow-visible ${isDark ? 'bg-ink-soft/60 border-white/10' : 'bg-gray-100 border-gray-200'}`}
+            style={{ scrollbarWidth: 'none' }}
+          >
+            <div className="flex items-center flex-nowrap gap-0">
+              {TABS.map((tab, i) => (
+                <TabButton
+                  key={i}
+                  label={tab.label}
+                  active={activeTab === i}
+                  onClick={() => { setActiveTab(i) }}
+                  isDark={isDark}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Panel */}
-        <div className={`w-full h-[400px] rounded-3xl border overflow-hidden flex flex-col md:flex-row relative transition-all duration-500 ${isDark ? 'bg-ink-soft/40 border-white/10 shadow-2xl' : 'bg-white border-gray-200 shadow-[0_10px_40px_rgba(0,71,224,0.06)]'}`}>
+        {/* Panel: h-auto + min-h no mobile, h-[400px] fixo no desktop */}
+        <div className={`w-full min-h-[500px] md:h-[400px] rounded-3xl border overflow-hidden flex flex-col md:flex-row relative transition-all duration-500 ${isDark ? 'bg-ink-soft/40 border-white/10 shadow-2xl' : 'bg-white border-gray-200 shadow-[0_10px_40px_rgba(0,71,224,0.06)]'}`}>
           {activeTab === 0 && <TabFlightParsing isDark={isDark} />}
           {activeTab === 1 && <TabPdfMigration isDark={isDark} />}
           {activeTab === 2 && <TabPromptGen isDark={isDark} />}
