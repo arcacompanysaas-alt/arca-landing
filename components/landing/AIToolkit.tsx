@@ -22,6 +22,8 @@ const scannerStyle = `
   @keyframes slide-in-block { 0% { opacity: 0; transform: translateX(-20px); } 100% { opacity: 1; transform: translateX(0); } }
   .block-1 { animation: slide-in-block 0.5s ease-out 0.2s both; }
   .block-2 { animation: slide-in-block 0.5s ease-out 0.5s both; }
+  .block-3 { animation: slide-in-block 0.5s ease-out 0.8s both; }
+  .block-4 { animation: slide-in-block 0.5s ease-out 1.1s both; }
   @keyframes pulse-skeleton { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
   .skeleton { animation: pulse-skeleton 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 `
@@ -131,13 +133,23 @@ function TabPdfMigration({ isDark }: { isDark: boolean }) {
           <div className="mb-2">
             <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-brand-light' : 'text-brand'}`}>Output: Estrutura Modular</span>
           </div>
-          <div className={`block-1 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
-            <div className="w-8 h-8 rounded bg-orange-500/10 flex items-center justify-center text-orange-500 text-xs">🏨</div>
-            <p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Hotel Extraído</p>
-          </div>
-          <div className={`block-2 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
-            <div className="w-8 h-8 rounded bg-blue-500/10 flex items-center justify-center text-blue-500 text-xs">✈️</div>
-            <p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Voo Extraído</p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className={`block-1 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
+              <div className="w-8 h-8 rounded bg-orange-500/10 flex items-center justify-center text-orange-500 text-xs">🏨</div>
+              <div><p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Hotel</p><p className={`text-[9px] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Extraído</p></div>
+            </div>
+            <div className={`block-2 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
+              <div className="w-8 h-8 rounded bg-blue-500/10 flex items-center justify-center text-blue-500 text-xs">✈️</div>
+              <div><p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Voo</p><p className={`text-[9px] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Extraído</p></div>
+            </div>
+            <div className={`block-3 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
+              <div className="w-8 h-8 rounded bg-purple-500/10 flex items-center justify-center text-purple-500 text-xs">🚗</div>
+              <div><p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Transfer</p><p className={`text-[9px] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>VIP</p></div>
+            </div>
+            <div className={`block-4 flex items-center gap-3 p-3 rounded-xl border ${isDark ? 'bg-ink-card border-white/10' : 'bg-white border-gray-200 shadow-sm'}`}>
+              <div className="w-8 h-8 rounded bg-amber-500/10 flex items-center justify-center text-amber-500 text-xs">⭐</div>
+              <div><p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Experiência</p><p className={`text-[9px] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Michelin</p></div>
+            </div>
           </div>
         </div>
       </div>
@@ -182,11 +194,34 @@ function TabPromptGen({ isDark }: { isDark: boolean }) {
           ) : (
             <div className={`w-full rounded-2xl border overflow-hidden shadow-lg ${isDark ? 'border-white/10 bg-ink-card' : 'border-gray-200 bg-white shadow-xl shadow-gray-200/50'}`}>
               <div className="h-24 w-full bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=400&q=80')" }} />
-              <div className="p-4">
-                <h4 className={`font-bold text-sm mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Roma: Gastronomia ★</h4>
-                <div className="space-y-2 mt-2">
-                  <div className={`h-2 w-full rounded skeleton ${isDark ? 'bg-white/10' : 'bg-gray-200'}`} />
-                  <div className={`h-2 w-4/5 rounded skeleton ${isDark ? 'bg-white/10' : 'bg-gray-200'}`} />
+              <div className="p-4 space-y-3 max-h-[200px] overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+                <h4 className={`font-bold text-sm mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Roma: Gastronomia ★</h4>
+
+                <div className={`border-l-2 pl-3 ${isDark ? 'border-brand-light' : 'border-brand'}`}>
+                  <p className={`text-[10px] font-bold uppercase tracking-wider ${isDark ? 'text-brand-light' : 'text-brand'}`}>Dia 01</p>
+                  <p className={`text-xs leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>A Roma Clássica & Gastronomia</p>
+                  <ul className={`text-[9px] space-y-1 mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <li>• Check-in Hotel de la Ville</li>
+                    <li>• Jantar La Pergola (3★) com sommelier</li>
+                  </ul>
+                </div>
+
+                <div className={`border-l-2 pl-3 ${isDark ? 'border-brand-light' : 'border-brand'}`}>
+                  <p className={`text-[10px] font-bold uppercase tracking-wider ${isDark ? 'text-brand-light' : 'text-brand'}`}>Dia 02</p>
+                  <p className={`text-xs leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Segredos do Vaticano</p>
+                  <ul className={`text-[9px] space-y-1 mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <li>• Tour privado Capela Sistina</li>
+                    <li>• Almoço Piazza Navona</li>
+                  </ul>
+                </div>
+
+                <div className={`border-l-2 pl-3 ${isDark ? 'border-brand-light' : 'border-brand'}`}>
+                  <p className={`text-[10px] font-bold uppercase tracking-wider ${isDark ? 'text-brand-light' : 'text-brand'}`}>Dia 03</p>
+                  <p className={`text-xs leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Dolce Vita & Villa d'Este</p>
+                  <ul className={`text-[9px] space-y-1 mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <li>• Passeio Trastevere</li>
+                    <li>• Ceia no Heinz Beck</li>
+                  </ul>
                 </div>
               </div>
             </div>
