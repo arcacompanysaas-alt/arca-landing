@@ -7,6 +7,7 @@ import TopHeader from '@/components/landing/TopHeader'
 import HeroSticky from '@/components/landing/HeroSticky'
 import AIToolkit from '@/components/landing/AIToolkit'
 import FeaturesBenefits from '@/components/landing/FeaturesBenefits'
+import FAQAIConsole from '@/components/landing/FAQAIConsole'
 import PricingLux from '@/components/landing/PricingLux'
 import FinalCTA from '@/components/landing/FinalCTA'
 import Footer from '@/components/landing/Footer'
@@ -37,6 +38,7 @@ export default function LandingShell() {
         <HeroSticky isDark={isDark} />
         <AIToolkit isDark={isDark} />
         <FeaturesBenefits isDark={isDark} />
+        <FAQAIConsole isDark={isDark} />
         <PricingLux isDark={isDark} />
         <FinalCTA isDark={isDark} />
         <Footer isDark={isDark} />
